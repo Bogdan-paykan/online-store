@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <header style="display: flex; justify-content: space-between; align-items: center; padding: 10px;">
+        <h1>Product List</h1>
+        <button onclick="window.location.href='/cart'">Cart</button>
+    </header>
+
+    <!-- Форма для пошуку -->
+    <form id="search-form">
+        <input type="text" id="query" placeholder="Search by name or description">
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- Форма для фільтрації -->
+    <form id="filter-form">
+        <label for="minPrice">Min Price:</label>
+        <input type="number" id="minPrice" placeholder="0">
+        <label for="maxPrice">Max Price:</label>
+        <input type="number" id="maxPrice" placeholder="1000">
+        <button type="submit">Filter</button>
+    </form>
+
+    <!-- Список продуктів -->
+    <div id="products">
+        {{#each products}}
+        <div class="product" data-id="{{id}}">
+            <h2 class="product-name">{{name}}</h2>
+            <p class="product-price">Price: ${{price}}</p>
+            <button onclick="addToCart({{id}})">Add to Cart</button>
+        </div>
+        {{/each}}
+    </div>
+
+  
+    <!-- Форма для оформлення замовлення -->
+    <div id="order-form-container" style="display: none; margin-top: 20px;">
+        <form id="order-form">
+            <label for="name">Ваше ім'я:</label>
+            <input type="text" id="name" name="name" required>
+            <br>
+            <label for="address">Адреса доставки:</label>
+            <input type="text" id="address" name="address" required>
+            <br>
+            <label for="phone">Телефон:</label>
+            <input type="text" id="phone" name="phone" required>
+            <br>
+            <button type="submit">Підтвердити замовлення</button>
+        </form>
+    </div>
+
+    <script src="/home.js"></script>
+</body>
+</html>

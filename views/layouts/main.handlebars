@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <header style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background-color: #fff; border-bottom: 1px solid #ccc;">
+        <!-- Лівий блок: кнопки Home та Logout -->
+        <div>
+            <button onclick="window.location.href='/products'">Home</button>
+            <button onclick="logout()">Logout</button>
+        </div>
+
+        <!-- Правий блок: адміністративні кнопки -->
+        {{#if isAdmin}}
+        <div id="admin-actions" style="display: flex; gap: 10px;">
+            <button onclick="window.location.href='/admin/add-product'">Add Product</button>
+            <button onclick="window.location.href='/admin/delete-product'">Delete Product</button>
+            <button onclick="window.location.href='/admin/edit-products'">Edit Products</button>
+        </div>
+        {{/if}}
+    </header>
+
+    {{{body}}}  <!-- Це дозволяє вбудовувати специфічний контент для кожної сторінки -->
+
+    <script>
+        async function logout() {
+            try {
+                const response = await axios.post('/logout');
+                alert(response.data.message);
+                window.location.href = '/login';
+            } catch (error) {
+                console.error('Logout failed:', error);
+                alert('Failed to log out.');
+            }
+        }
+    </script>
+</body>
+</html>

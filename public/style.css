@@ -1,0 +1,135 @@
+/* Існуючі стилі */
+form {
+    max-width: 300px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+input {
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+button {
+    padding: 10px 15px;
+    background: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+/* Стилі для пошуку */
+#search-form {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#query {
+    width: 300px;
+    padding: 5px;
+}
+
+#search-form button {
+    margin-left: 10px;
+    padding: 5px 10px;
+}
+
+/* Стилі для фільтра */
+#filter-form {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 100%; /* збільшуємо контейнер форми */
+    max-width: 500px; /* Збільшуємо максимальну ширину форми */
+}
+
+#filter-form label {
+    margin-right: 10px;
+}
+
+#minPrice, #maxPrice {
+    width: 100px;
+    padding: 10px;
+    margin-right: 10px;
+}
+
+#filter-form button {
+    padding: 15px 20px;
+    width: 100%; /* кнопка займає всю ширину контейнера */
+    font-size: 16px;
+    background: #28a745; /* Зеленіший відтінок для фільтра */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+#filter-form button:hover {
+    background: #218838;
+}
+
+/* Стилі для сторінки кошика */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #ccc;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.cart-item h2 {
+    margin: 0;
+}
+
+.cart-item p {
+    margin: 0;
+}
+
+.quantity-container {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Відступ між текстом і полем */
+}
+
+.quantity-input {
+    width: 50px;
+    text-align: center;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+button.remove-button {
+    background: #FF5733;
+    border: none;
+    border-radius: 3px;
+    color: #fff;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+button.remove-button:hover {
+    background: #C70000;
+}

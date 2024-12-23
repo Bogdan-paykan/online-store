@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Your Cart</h1>
+        <button onclick="window.location.href='/products'">Back to Products</button>
+    </header>
+
+    <div id="cart-items"></div>
+
+    <div id="cart-summary">
+        <h2>
+            Total: $<span id="cart-total">0.00</span>
+        </h2>
+    </div>
+
+    <!-- Кнопка "Оформити" -->
+    <div style="margin-top: 20px; text-align: center;">
+        <button id="show-order-form">Оформити</button>
+    </div>
+
+    <!-- Форма для оформлення замовлення -->
+    <div id="order-form-container" style="display: none; margin-top: 20px;">
+        <form id="order-form">
+            <label for="name">Ваше ім'я:</label>
+            <input type="text" id="name" name="name" required>
+            <br>
+            <label for="address">Адреса доставки:</label>
+            <input type="text" id="address" name="address" required>
+            <br>
+            <label for="phone">Телефон:</label>
+            <input type="text" id="phone" name="phone" required>
+            <br>
+            <button type="submit">Підтвердити замовлення</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cart = JSON.parse(getCookie('cart') || '[]');
+            const container = document.getElementById('cart-items');
+            const orderButton = document.getElementById('show-order-form');
+            const orderFormContainer = document.getElementById('order-form-container');
+            const orderForm = document.getElementById('order-form');
+
+            if (cart.length === 0) {
+                container.innerHTML = '<p>Your cart is empty.</p>';
+                return;
+            }
+
+            container.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <div>
+                        <h2>${item.name}</h2>
+                        <p>Price: $${item.price ? item.price.toFixed(2) : 'N/A'}</p>
+                    </div>
+                    <div class="quantity-container">
+                        <span>Quantity:</span>
+                        <input type="number" value="${item.quantity}" min="1" data-id="${item.productId}" class="quantity-input">
+                        <button class="remove-button" onclick="removeFromCart(${item.productId})">Remove</button>
+                    </div>
+                </div>
+            `).join('');
+
+            updateCartTotal(cart);
+
+            // Перерахунок загальної суми при зміні кількості
+            document.querySelectorAll('.quantity-input').forEach(input => {
+                input.addEventListener('input', (event) => {
+                    const productId = parseInt(event.target.getAttribute('data-id'), 10);
+                    const newQuantity = parseInt(event.target.value, 10);
+
+                    if (newQuantity > 0) {
+                        updateCartQuantity(productId, newQuantity);
+                        updateCartTotal(cart);
+                    } else {
+                        alert('Quantity must be at least 1.');
+                        event.target.value = 1;
+                    }
+                });
+            });
+
+            // Показати форму для оформлення замовлення
+            orderButton.addEventListener('click', () => {
+                orderFormContainer.style.display = 'block';
+                orderButton.style.display = 'none';
+            });
+
+            // Обробка форми замовлення
+            orderForm.addEventListener('submit', async (event) => {
+                event.preventDefault();
+
+                const name = document.getElementById('name').value;
+                const address = document.getElementById('address').value;
+                const phone = document.getElementById('phone').value;
+
+                try {
+                    const response = await axios.post('/order', { name, address, phone });
+                    alert('Замовлення успішно оформлено!');
+                    orderFormContainer.style.display = 'none';
+                    orderButton.style.display = 'block';
+                } catch (error) {
+                    console.error('Error placing order:', error);
+                    alert('Помилка оформлення замовлення. Спробуйте ще раз.');
+                }
+            });
+        });
+
+        function getCookie(name) {
+            const decodedCookie = decodeURIComponent(document.cookie);
+            const cookies = decodedCookie.split(';');
+            for (let cookie of cookies) {
+                while (cookie.charAt(0) === ' ') {
+                    cookie = cookie.substring(1);
+                }
+                if (cookie.indexOf(name + "=") === 0) {
+                    return cookie.substring(name.length + 1, cookie.length);
+                }
+            }
+            return "";
+        }
+
+        function setCookie(name, value, days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + date.toUTCString();
+            document.cookie = `${name}=${encodeURIComponent(value)};${expires};path=/`;
+        }
+
+        function updateCartQuantity(productId, quantity) {
+            const cart = JSON.parse(getCookie('cart') || '[]');
+            const cartItem = cart.find(item => item.productId === productId);
+
+            if (cartItem) {
+                cartItem.quantity = quantity;
+                setCookie('cart', JSON.stringify(cart), 7);
+            }
+        }
+
+        function updateCartTotal(cart) {
+            const updatedCart = JSON.parse(getCookie('cart') || '[]');
+            const total = updatedCart.reduce((sum, item) => sum + (item.price ? item.price * item.quantity : 0), 0);
+            document.getElementById('cart-total').textContent = total.toFixed(2);
+        }
+
+        function removeFromCart(productId) {
+            const cart = JSON.parse(getCookie('cart') || '[]');
+            const updatedCart = cart.filter(item => item.productId !== productId);
+            setCookie('cart', JSON.stringify(updatedCart), 7);
+            location.reload();
+        }
+    </script>
+</body>
+</html>

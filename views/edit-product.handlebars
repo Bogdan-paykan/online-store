@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Products</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <h1>Edit Products</h1>
+
+    <button onclick="window.location.href='/products'">Home</button>
+    <button onclick="logout()">Logout</button>
+
+    <div id="products">
+        {{#each products}}
+        <div class="product" data-id="{{id}}">
+            <div class="view-mode">
+                <h2>{{name}}</h2>
+                <p>Price: ${{price}}</p>
+                <p>{{description}}</p>
+                <button class="edit-button">Edit</button>
+            </div>
+            <div class="edit-mode" style="display: none;">
+                <label>Product Name:</label>
+                <input type="text" class="edit-name" value="{{name}}">
+                <label>Price:</label>
+                <input type="number" class="edit-price" value="{{price}}">
+                <label>Description:</label>
+                <textarea class="edit-description">{{description}}</textarea>
+                <button class="save-button">Save</button>
+                <button class="cancel-button">Cancel</button>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+
+    <script src="/edit-products.js"></script>
+</body>
+</html>

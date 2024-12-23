@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Product</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <h1>Delete Product</h1>
+    
+
+    <div id="products">
+        {{#each products}}
+        <div class="product">
+            <h2>{{name}}</h2>
+            <p>Price: ${{price}}</p>
+            <p>{{description}}</p>
+            <button onclick="deleteProduct({{id}})">Delete</button>
+        </div>
+        {{/each}}
+    </div>
+
+    <script>
+        function deleteProduct(productId) {
+            if (!confirm('Are you sure you want to delete this product?')) return;
+
+            axios.delete(`/products/${productId}`)
+                .then(() => {
+                    alert('Product deleted successfully!');
+                    window.location.reload();
+                })
+                .catch(err => alert('Failed to delete product: ' + err.response.data.message));
+        }
+    </script>
+</body>
+</html>

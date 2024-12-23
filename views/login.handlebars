@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        /* Шрифт для сторінки Login */
+        body {
+            font-family: 'Arial', sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+            font-family: 'Verdana', sans-serif;
+        }
+
+        form {
+            font-family: 'Verdana', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <h1>Login</h1>
+
+    <form id="login-form">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <button type="submit">Login</button>
+    </form>
+
+    <p id="error-message" style="color: red; text-align: center;"></p>
+
+    <script src="/login.js"></script>
+</body>
+</html>
